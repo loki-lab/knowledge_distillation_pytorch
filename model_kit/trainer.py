@@ -71,3 +71,8 @@ class Trainer:
             print('Epoch {}/{}'.format(epoch + 1, epochs))
             self.train(train_loader)
             self.test(test_loader)
+
+
+class KnowledgeDistillationTrainer(Trainer):
+    def __init__(self, teacher_model, student_model, criterion, optimizer, device):
+        super().__init__(model=student_model, criterion=criterion, optimizer=optimizer, device=device)
