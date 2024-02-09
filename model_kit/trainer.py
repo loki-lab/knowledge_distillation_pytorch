@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as F
-
+from tqdm import tqdm
 
 class Trainer:
     def __init__(self, model, criterion, optimizer, device, metrics):
@@ -13,7 +13,7 @@ class Trainer:
     def train(self, train_loader):
         self.model.train()
         running_loss = 0.0
-        for inputs, labels in train_loader:
+        for inputs, labels in tqdm(train_loader):
             inputs, labels = inputs.to(self.device), labels.to(self.device)
             outputs = self.model(inputs)
             loss = self.criterion(
@@ -37,7 +37,7 @@ class Trainer:
         with torch.no_grad():
             self.model.eval()
             running_loss = 0.0
-            for inputs, labels in test_loader:
+            for inputs, labels in tqdm(test_loader):
                 inputs, labels = inputs.to(self.device), labels.to(self.device)
                 outputs = self.model(inputs)
                 loss = self.criterion(
@@ -72,6 +72,7 @@ class Trainer:
         }, path)
 
     def fit(self, train_loader, test_loader, epochs):
+        print("Start training")
         best_metrics = 0.0
         for epoch in range(epochs):
             print('Epoch {}/{}'.format(epoch + 1, epochs))
@@ -83,6 +84,8 @@ class Trainer:
                 self.save_checkpoint("./checkpoints/best_weight", epoch, val_loss, val_acc)
 
             self.save_checkpoint("./checkpoints/latest_weight", epoch, loss, acc)
+
+        print("Finished training")
 
 
 class KnowledgeDistillationTrainer(Trainer):
