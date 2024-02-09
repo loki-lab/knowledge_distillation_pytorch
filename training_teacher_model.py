@@ -41,7 +41,7 @@ if __name__ == '__main__':
                                              transforms.Normalize((0.5,), (0.5,))])
                  }
 
-    train_ld, val_ld = load_data(dataset_path, trans=transform["train"], train_size=200000, val_size=5000)
+    train_ld, val_ld = load_data(dataset_path, trans=transform["train"], train_size=20000, val_size=5000)
     model = VGG16(num_classes=2)
     print(model)
     criterion = nn.CrossEntropyLoss()
