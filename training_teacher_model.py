@@ -28,7 +28,7 @@ def load_data(data_path, trans=None, train_size=None, val_size=None):
 
 
 if __name__ == '__main__':
-    dataset_path = ""
+    dataset_path = "datasets/PetImg"
     transform = {"train": transforms.Compose([transforms.ToTensor(),
                                               transforms.Resize((224, 224), antialias=True),
                                               transforms.Normalize((0.5,), (0.5,)),
