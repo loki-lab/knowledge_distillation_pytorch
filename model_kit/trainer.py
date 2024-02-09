@@ -82,9 +82,9 @@ class Trainer:
 
             if val_acc > best_metrics:
                 best_metrics = acc
-                self.save_checkpoint("./checkpoints/best_weight", epoch, val_loss, val_acc)
+                self.save_checkpoint("./checkpoints/best_weight.pt", epoch, val_loss, val_acc)
 
-            self.save_checkpoint("./checkpoints/latest_weight", epoch, loss, acc)
+            self.save_checkpoint("./checkpoints/latest_weight.pt", epoch, loss, acc)
 
         print("Finished training")
 
