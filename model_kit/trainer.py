@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F
 from tqdm import tqdm
 
+
 class Trainer:
     def __init__(self, model, criterion, optimizer, device, metrics):
         self.model = model.to(device)
