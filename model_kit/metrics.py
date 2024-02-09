@@ -5,7 +5,8 @@ def accuracy(model, data_loader, device):
     model.eval()
     with torch.no_grad():
         model.eval()
-        for inputs in data_loader:
+        for data in data_loader:
+            inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
             outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
