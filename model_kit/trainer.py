@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 class Trainer:
     def __init__(self, model, criterion, optimizer, device, metrics):
-        self.model = model
+        self.model = model.to(device)
         self.criterion = criterion
         self.optimizer = optimizer(model.parameters(), lr=0.001)
         self.device = device
