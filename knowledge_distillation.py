@@ -25,7 +25,7 @@ if __name__ == '__main__':
                                              transforms.Normalize((0.5,), (0.5,))])
                  }
 
-    train_ld, val_ld = load_data(data_path, trans=transform["train"], train_size=20000, val_size=5000)
+    train_ld, val_ld = load_data(data_path, trans=transform["train"], train_size=20000, val_size=5000, batch_size=8)
     teacher_model = VGG16(num_classes=2)
     teacher_model.load_state_dict(weight["model_state_dict"])
     student_model = VGG11(num_classes=2)

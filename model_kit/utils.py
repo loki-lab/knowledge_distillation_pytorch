@@ -10,12 +10,12 @@ def check_cuda():
         return "cpu"
 
 
-def load_data(data_path, trans=None, train_size=None, val_size=None):
+def load_data(data_path, trans=None, train_size=None, val_size=None, batch_size=32):
     full_data = datasets.ImageFolder(data_path, transform=trans)
     train_ds, val_ds = random_split(full_data, [train_size, val_size])
     print("dataset train size: ", len(train_ds), "train size: ", len(train_ds))
 
-    train_loader = DataLoader(train_ds, batch_size=32, shuffle=True, num_workers=2)
-    val_loader = DataLoader(val_ds, batch_size=32, shuffle=False, num_workers=2)
+    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=2)
+    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=2)
 
     return train_loader, val_loader
