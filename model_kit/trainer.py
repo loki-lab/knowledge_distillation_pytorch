@@ -4,12 +4,11 @@ from tqdm import tqdm
 
 
 class Trainer:
-    def __init__(self, model, criterion, optimizer, device, metrics):
+    def __init__(self, model, criterion, optimizer, device):
         self.model = model.to(device)
         self.criterion = criterion
         self.optimizer = optimizer(model.parameters(), lr=0.001)
         self.device = device
-        self.metrics = metrics
 
     def train(self, train_loader):
         self.model.train()
@@ -101,8 +100,8 @@ class Trainer:
 
 
 class KnowledgeDistillationTrainer(Trainer):
-    def __init__(self, teacher_model, student_model, criterion, optimizer, device, metrics, t, alpha):
-        super().__init__(model=student_model, criterion=criterion, optimizer=optimizer, device=device, metrics=metrics)
+    def __init__(self, teacher_model, student_model, criterion, optimizer, device, t, alpha):
+        super().__init__(model=student_model, criterion=criterion, optimizer=optimizer, device=device)
         self.teacher_model = teacher_model
         self.t = t
         self.alpha = alpha
@@ -124,12 +123,12 @@ class KnowledgeDistillationTrainer(Trainer):
             distill_loss.backward()
             self.optimizer.step()
 
-        total_loss = running_loss / len(train_loader.dataset)
+        # total_loss = running_loss / len(train_loader.dataset)
 
-        student_metrics = self.metrics(self.model, train_loader, self.device)
-        teacher_metrics = self.metrics(self.teacher_model, train_loader, self.device)
+        # student_metrics = self.metrics(self.model, train_loader, self.device)
+        # teacher_metrics = self.metrics(self.teacher_model, train_loader, self.device)
 
-        print(f"Distill set: "
-              f"Distill loss: {total_loss:.4f}, "
-              f"Teacher Accuracy: {teacher_metrics:.4f}, "
-              f"Student Accuracy: {student_metrics:.4f}")
+        # print(f"Distill set: "
+        #       f"Distill loss: {total_loss:.4f}, "
+        #       f"Teacher Accuracy: {teacher_metrics:.4f}, "
+        #       f"Student Accuracy: {student_metrics:.4f}")

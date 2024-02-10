@@ -3,7 +3,6 @@ from torch import nn
 
 from model_kit.models import VGG16
 from model_kit.trainer import Trainer
-from model_kit.metrics import accuracy
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
 from torch.optim import Adam
@@ -45,6 +44,6 @@ if __name__ == '__main__':
     model = VGG16(num_classes=2)
     print(model)
     criterion = nn.CrossEntropyLoss()
-    trainer = Trainer(model, criterion=criterion, optimizer=Adam, device=check_cuda(), metrics=accuracy)
+    trainer = Trainer(model, criterion=criterion, optimizer=Adam, device=check_cuda())
 
     trainer.fit(train_loader=train_ld, test_loader=val_ld, epochs=25)
