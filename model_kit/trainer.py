@@ -1,5 +1,5 @@
 import torch
-import torch.nn.functional as F
+import torch.nn.functional as f
 from tqdm import tqdm
 
 
@@ -91,7 +91,7 @@ class Trainer:
             val_acc, val_loss = self.test(test_loader)
 
             if val_acc > best_metrics:
-                best_metrics = acc
+                best_metrics = val_acc
                 self.save_checkpoint("./checkpoints/best_weight.pt", epoch, val_loss, val_acc)
 
             self.save_checkpoint("./checkpoints/latest_weight.pt", epoch, loss, acc)
@@ -110,25 +110,47 @@ class KnowledgeDistillationTrainer(Trainer):
         self.model.train()
         self.teacher_model.eval()
         running_loss = 0.0
+        total_correct = 0.0
+        total_sample = 0.0
+        total_correct_distill = 0.0
         for inputs, labels in train_loader:
             inputs, labels = inputs.to(self.device), labels.to(self.device)
             labels_distill = self.teacher_model(inputs)
             outputs = self.model(inputs)
-            distill_loss = (self.criterion(F.log_softmax(outputs / self.t, dim=1),
-                                           F.softmax(labels_distill / self.t, dim=1)) * (self.alpha * self.t * self.t) +
-                            F.cross_entropy(outputs, labels) * (1. - self.alpha))
+            distill_loss = (self.criterion(f.log_softmax(outputs / self.t, dim=1),
+                                           f.softmax(labels_distill / self.t, dim=1)) * (self.alpha * self.t * self.t) +
+                            f.cross_entropy(outputs, labels) * (1. - self.alpha))
 
-            running_loss += distill_loss.item()
             self.optimizer.zero_grad()
             distill_loss.backward()
             self.optimizer.step()
 
-        # total_loss = running_loss / len(train_loader.dataset)
+            _, predicted = torch.max(outputs, 1)
+            _, distill_predicted = torch.max(labels_distill, 1)
+            total_correct_distill += (predicted == labels_distill).sum().item()
+            total_correct += (predicted == labels).sum().item()
+            running_loss += distill_loss.item()
+            total_sample += labels.size(0)
 
-        # student_metrics = self.metrics(self.model, train_loader, self.device)
-        # teacher_metrics = self.metrics(self.teacher_model, train_loader, self.device)
+        total_loss = running_loss / total_sample
 
-        # print(f"Distill set: "
-        #       f"Distill loss: {total_loss:.4f}, "
-        #       f"Teacher Accuracy: {teacher_metrics:.4f}, "
-        #       f"Student Accuracy: {student_metrics:.4f}")
+        accuracy = total_correct / total_sample
+        distill_accuracy = total_correct_distill / total_sample
+
+        print(f"Train set: Average loss: {total_loss:.4f},"
+              f" Accuracy: {accuracy:.4f}, "
+              f" Distillation Accuracy: {distill_accuracy:4f}.")
+
+        return total_loss, accuracy, distill_accuracy
+
+    def fit(self, train_loader, test_loader, epochs):
+        best_metrics = 0.0
+        for epoch in range(epochs):
+            print("Epoch {}/{}".format(epoch + 1, epochs))
+            distill_loss, accuracy, distill_accuracy = self.train(train_loader)
+            val_loss, val_acc = self.test(test_loader)
+            if val_acc > best_metrics:
+                best_metrics = val_acc
+                self.save_checkpoint("./checkpoints/best_weight.pt", epoch, val_loss, val_acc)
+
+            self.save_checkpoint("./checkpoints/latest_weight.pt", epoch, distill_loss, accuracy)
