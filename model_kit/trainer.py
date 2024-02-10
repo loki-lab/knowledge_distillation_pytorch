@@ -103,7 +103,7 @@ class Trainer:
 class KnowledgeDistillationTrainer(Trainer):
     def __init__(self, teacher_model, student_model, criterion, optimizer, device, t, alpha):
         super().__init__(model=student_model, criterion=criterion, optimizer=optimizer, device=device)
-        self.teacher_model = teacher_model
+        self.teacher_model = teacher_model.to(device)
         self.t = t
         self.alpha = alpha
 
