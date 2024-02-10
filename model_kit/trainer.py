@@ -93,6 +93,7 @@ class Trainer:
             if val_acc > best_metrics:
                 best_metrics = val_acc
                 self.save_checkpoint("./checkpoints/best_weight.pt", epoch, val_loss, val_acc)
+                print("Saving best model")
 
             self.save_checkpoint("./checkpoints/latest_weight.pt", epoch, loss, acc)
 
@@ -152,5 +153,6 @@ class KnowledgeDistillationTrainer(Trainer):
             if val_acc > best_metrics:
                 best_metrics = val_acc
                 self.save_checkpoint("./checkpoints/best_weight.pt", epoch, val_loss, val_acc)
+                print("Saving best model")
 
             self.save_checkpoint("./checkpoints/latest_weight.pt", epoch, distill_loss, accuracy)
