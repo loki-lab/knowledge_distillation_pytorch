@@ -14,6 +14,7 @@ class Trainer:
     def train(self, train_loader):
         self.model.train()
         running_loss = 0.0
+        total_sample = 0.0
         for inputs, labels in tqdm(train_loader):
             inputs, labels = inputs.to(self.device), labels.to(self.device)
             outputs = self.model(inputs)
@@ -21,12 +22,14 @@ class Trainer:
                 outputs, labels
             )
 
-            running_loss += loss.item()
             self.optimizer.zero_grad()
             loss.backward()
             self.optimizer.step()
 
-        total_loss = running_loss / len(train_loader.dataset)
+            running_loss += loss.item()
+            total_sample += labels.size(0)
+
+        total_loss = running_loss / total_sample
 
         metrics = self.metrics(self.model, train_loader, self.device)
 
@@ -38,6 +41,7 @@ class Trainer:
         with torch.no_grad():
             self.model.eval()
             running_loss = 0.0
+            total_sample = 0.0
             for inputs, labels in tqdm(test_loader):
                 inputs, labels = inputs.to(self.device), labels.to(self.device)
                 outputs = self.model(inputs)
@@ -46,8 +50,9 @@ class Trainer:
                 )
 
                 running_loss += loss.item()
+                total_sample += labels.size(0)
 
-            total_loss = running_loss / len(test_loader.dataset)
+            total_loss = running_loss / total_sample
 
             metrics = self.metrics(self.model, test_loader, self.device)
 
