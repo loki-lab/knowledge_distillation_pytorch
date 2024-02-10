@@ -113,7 +113,7 @@ class KnowledgeDistillationTrainer(Trainer):
         total_correct = 0.0
         total_sample = 0.0
         total_correct_distill = 0.0
-        for inputs, labels in train_loader:
+        for inputs, labels in tqdm(train_loader):
             inputs, labels = inputs.to(self.device), labels.to(self.device)
             labels_distill = self.teacher_model(inputs)
             outputs = self.model(inputs)
