@@ -7,7 +7,7 @@ class Trainer:
     def __init__(self, model, criterion, optimizer, device):
         self.model = model.to(device)
         self.criterion = criterion
-        self.optimizer = optimizer(model.parameters(), lr=0.001)
+        self.optimizer = optimizer(model.parameters(), lr=0.0001)
         self.device = device
 
     def train(self, train_loader):
