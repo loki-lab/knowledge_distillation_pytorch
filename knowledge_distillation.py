@@ -30,7 +30,7 @@ if __name__ == '__main__':
     teacher_model.load_state_dict(weight["model_state_dict"])
     student_model = VGG11(num_classes=2)
     print(student_model)
-    criterion = nn.KLDivLoss()
+    criterion = nn.KLDivLoss(reduction="batchmean")
     trainer = KnowledgeDistillationTrainer(teacher_model=teacher_model,
                                            student_model=student_model,
                                            criterion=criterion,
