@@ -26,7 +26,8 @@ if __name__ == '__main__':
                  }
 
     train_ld, val_ld = load_data(data_path, trans=transform["train"], train_size=20000, val_size=5000)
-    teacher_model = VGG16(num_classes=2).load_state_dict(weight["model_state_dict"])
+    teacher_model = VGG16(num_classes=2)
+    teacher_model.load_state_dict(weight)
     student_model = VGG11(num_classes=2)
     print(student_model)
     criterion = nn.KLDivLoss()
