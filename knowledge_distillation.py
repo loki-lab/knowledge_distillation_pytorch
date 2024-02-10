@@ -10,7 +10,7 @@ if __name__ == '__main__':
     t = 2
     alpha = 0.8
 
-    weight = torch.load("./checkpoints/best_weight.pt")
+    weight = torch.load("checkpoints/teacher_model/best_weight.pt")
 
     data_path = "datasets/PetImg"
     transform = {"train": transforms.Compose([transforms.ToTensor(),
