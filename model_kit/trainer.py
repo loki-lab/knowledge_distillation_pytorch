@@ -128,7 +128,7 @@ class KnowledgeDistillationTrainer(Trainer):
 
             _, predicted = torch.max(outputs, 1)
             _, distill_predicted = torch.max(labels_distill, 1)
-            total_correct_distill += (predicted == labels_distill).sum().item()
+            total_correct_distill += (predicted == distill_predicted).sum().item()
             total_correct += (predicted == labels).sum().item()
             running_loss += distill_loss.item()
             total_sample += labels.size(0)
