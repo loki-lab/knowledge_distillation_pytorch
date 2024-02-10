@@ -15,6 +15,7 @@ class Trainer:
         self.model.train()
         running_loss = 0.0
         total_sample = 0.0
+        total_correct = 0.0
         for inputs, labels in tqdm(train_loader):
             inputs, labels = inputs.to(self.device), labels.to(self.device)
             outputs = self.model(inputs)
@@ -26,22 +27,25 @@ class Trainer:
             loss.backward()
             self.optimizer.step()
 
+            _, predicted = torch.max(outputs, 1)
+            total_correct += (predicted == labels).sum().item()
             running_loss += loss.item()
             total_sample += labels.size(0)
 
         total_loss = running_loss / total_sample
 
-        metrics = self.metrics(self.model, train_loader, self.device)
+        accuracy = total_correct / total_sample
 
-        print(f"Train set: Average loss: {total_loss:.4f}, Accuracy: {metrics:.4f}")
+        print(f"Train set: Average loss: {total_loss:.4f}, Accuracy: {accuracy:.4f}")
 
-        return metrics, total_loss
+        return accuracy, total_loss
 
     def test(self, test_loader):
         with torch.no_grad():
             self.model.eval()
             running_loss = 0.0
             total_sample = 0.0
+            total_correct = 0.0
             for inputs, labels in tqdm(test_loader):
                 inputs, labels = inputs.to(self.device), labels.to(self.device)
                 outputs = self.model(inputs)
@@ -49,16 +53,18 @@ class Trainer:
                     outputs, labels
                 )
 
+                _, predicted = torch.max(outputs, 1)
+                total_correct += (predicted == labels).sum().item()
                 running_loss += loss.item()
                 total_sample += labels.size(0)
 
             total_loss = running_loss / total_sample
 
-            metrics = self.metrics(self.model, test_loader, self.device)
+            accuracy = total_correct / total_sample
 
-            print(f"Test set: Average loss: {total_loss:.4f}, Accuracy: {metrics:.4f}")
+            print(f"Test set: Average loss: {total_loss:.4f}, Accuracy: {accuracy:.4f}")
 
-            return metrics, total_loss
+            return accuracy, total_loss
 
     def predict(self, image):
         with torch.no_grad():
