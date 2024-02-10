@@ -8,7 +8,7 @@ from model_kit.utils import check_cuda, load_data
 
 if __name__ == '__main__':
     t = 2
-    alpha = 10
+    alpha = 0.8
 
     weight = torch.load("./checkpoints/best_weight.pt")
 
