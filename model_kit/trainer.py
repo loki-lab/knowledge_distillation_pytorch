@@ -109,6 +109,7 @@ class KnowledgeDistillationTrainer(Trainer):
 
     def train(self, train_loader):
         self.model.train()
+        self.teacher_model.eval()
         running_loss = 0.0
         total_correct = 0.0
         total_sample = 0.0
