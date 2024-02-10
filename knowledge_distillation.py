@@ -1,4 +1,3 @@
-import torch
 from torch import nn
 from model_kit.models import VGG11, VGG16
 from model_kit.trainer import KnowledgeDistillationTrainer
