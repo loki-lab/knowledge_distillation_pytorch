@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 from model_kit.models import VGG11, VGG16
 from model_kit.trainer import KnowledgeDistillationTrainer
@@ -8,6 +9,8 @@ from model_kit.utils import check_cuda, load_data
 if __name__ == '__main__':
     t = 2
     alpha = 10
+
+    weight = torch.load("./checkpoints/best_weight.pt")
 
     data_path = "datasets/PetImg"
     transform = {"train": transforms.Compose([transforms.ToTensor(),
@@ -23,7 +26,7 @@ if __name__ == '__main__':
                  }
 
     train_ld, val_ld = load_data(data_path, trans=transform["train"], train_size=20000, val_size=5000)
-    teacher_model = VGG16(num_classes=2)
+    teacher_model = VGG16(num_classes=2).load_state_dict(weight["model_state_dict"])
     student_model = VGG11(num_classes=2)
     print(student_model)
     criterion = nn.KLDivLoss()
