@@ -146,6 +146,7 @@ class KnowledgeDistillationTrainer(Trainer):
         return total_loss, accuracy, distill_accuracy
 
     def fit(self, train_loader, test_loader, epochs):
+        print("Start distillation")
         best_metrics = 0.0
         for epoch in range(epochs):
             print("Epoch {}/{}".format(epoch + 1, epochs))
@@ -157,3 +158,5 @@ class KnowledgeDistillationTrainer(Trainer):
                 print("Saving best model")
 
             self.save_checkpoint("./checkpoints/student_model/latest_weight.pt", epoch, distill_loss, accuracy)
+
+        print("Finish distillation")
