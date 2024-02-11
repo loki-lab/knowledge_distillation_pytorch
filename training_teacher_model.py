@@ -1,6 +1,4 @@
-import torch
 from torch import nn
-
 from model_kit.models import VGG16
 from model_kit.trainer import Trainer
 from torchvision import transforms
