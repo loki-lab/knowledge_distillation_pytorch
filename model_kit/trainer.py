@@ -120,7 +120,7 @@ class KnowledgeDistillationTrainer(Trainer):
             labels_distill = self.teacher_model(inputs)
             outputs = self.model(inputs)
             distill_loss = (nn.KLDivLoss(reduction="batchmean")(f.log_softmax(outputs / self.t, dim=1),
-                                           f.softmax(labels_distill / self.t, dim=1)) * (self.alpha * self.t * self.t) +
+                            f.softmax(labels_distill / self.t, dim=1)) * (self.alpha * self.t * self.t) +
                             f.cross_entropy(outputs, labels) * (1. - self.alpha))
 
             self.optimizer.zero_grad()
