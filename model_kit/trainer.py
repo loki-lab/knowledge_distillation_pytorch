@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as f
+from torch import nn
 from tqdm import tqdm
 
 
@@ -118,7 +119,7 @@ class KnowledgeDistillationTrainer(Trainer):
             inputs, labels = inputs.to(self.device), labels.to(self.device)
             labels_distill = self.teacher_model(inputs)
             outputs = self.model(inputs)
-            distill_loss = (self.criterion(f.log_softmax(outputs / self.t, dim=1),
+            distill_loss = (nn.KLDivLoss(reduction="batchmean")(f.log_softmax(outputs / self.t, dim=1),
                                            f.softmax(labels_distill / self.t, dim=1)) * (self.alpha * self.t * self.t) +
                             f.cross_entropy(outputs, labels) * (1. - self.alpha))
 
