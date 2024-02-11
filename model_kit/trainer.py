@@ -92,9 +92,9 @@ class Trainer:
             val_acc, val_loss = self.test(test_loader)
 
             if val_acc > best_metrics:
-                best_metrics = val_acc
                 self.save_checkpoint("./checkpoints/teacher_model/best_weight.pt", epoch, val_loss, val_acc)
-                print("Saving best model")
+                print("Saved best model")
+                best_metrics = val_acc
 
             self.save_checkpoint("./checkpoints/teacher_model/latest_weight.pt", epoch, loss, acc)
 
@@ -151,11 +151,11 @@ class KnowledgeDistillationTrainer(Trainer):
         for epoch in range(epochs):
             print("Epoch {}/{}".format(epoch + 1, epochs))
             distill_loss, accuracy, distill_accuracy = self.train(train_loader)
-            val_loss, val_acc = self.test(test_loader)
+            val_acc, val_loss = self.test(test_loader)
             if val_acc > best_metrics:
-                best_metrics = val_acc
                 self.save_checkpoint("./checkpoints/student_model/best_weight.pt", epoch, val_loss, val_acc)
-                print("Saving best model")
+                print("Saved best model")
+                best_metrics = val_acc
 
             self.save_checkpoint("./checkpoints/student_model/latest_weight.pt", epoch, distill_loss, accuracy)
 
