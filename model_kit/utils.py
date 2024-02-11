@@ -5,8 +5,10 @@ from torchvision import datasets
 
 def check_cuda():
     if torch.cuda.is_available():
+        print("CUDA is available")
         return "cuda"
     else:
+        print("CUDA is not available")
         return "cpu"
 
 
