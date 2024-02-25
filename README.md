@@ -5,8 +5,8 @@ việc chuyển giao kiến thức từ một model lớn đến một model nh�
 <h1>Cách thức hoạt động</h1>
 <p>Chúng ta có hai model. Model lớn là teacher model, đã được huấn luyện sẵn và model nhỏ là student model chưa được huấn luyện. Giờ công việc<br>
   của chúng ta chỉ đơn giản là sử dụng teacher model để đánh nhãn cho các data sẽ được đưa vào huấn luyện ở student model.</p>
-![image](https://github.com/loki-lab/knowledge_distillation_pytorch/assets/128866042/b1272ee9-2696-4f68-95aa-e644177e1e37)
+<img src=https://github.com/loki-lab/knowledge_distillation_pytorch/assets/128866042/b1272ee9-2696-4f68-95aa-e644177e1e37>
 
 <h1>Hàm mất mát</h1>
 Để thực hiện Knowlegde Distillation, ta cần phải sử dụng hàm loss như dưới đây.
-![image](https://github.com/loki-lab/knowledge_distillation_pytorch/assets/128866042/59f5b302-653f-4d6f-a437-fc35777064aa)
+<img src=https://github.com/loki-lab/knowledge_distillation_pytorch/assets/128866042/59f5b302-653f-4d6f-a437-fc35777064aa>
