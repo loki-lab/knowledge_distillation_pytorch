@@ -10,3 +10,6 @@ việc chuyển giao kiến thức từ một model lớn đến một model nh�
 <h1>Hàm mất mát</h1>
 Để thực hiện Knowlegde Distillation, ta cần phải sử dụng hàm loss như dưới đây.
 <img src=https://github.com/loki-lab/knowledge_distillation_pytorch/assets/128866042/59f5b302-653f-4d6f-a437-fc35777064aa>
+<h1>Kết quả dự đoán</h1>
+- Teacher Model: 94.4% accuracy 
+- Student Model: 94.2% accuracy
