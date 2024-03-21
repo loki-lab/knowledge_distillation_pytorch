@@ -1,7 +1,7 @@
 import torch
 from model_kit.models import VGG11
 
-weight = torch.load("checkpoints/student_model/best_model.pt")
+weight = torch.load("checkpoints/student_model/best_weight.pt")
 
 torch_model = VGG11()
 torch_model.load_state_dict(weight["model_state_dict"])
